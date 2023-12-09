@@ -38,7 +38,7 @@ const Home = () => {
                   </button>
                 </Link>
                 <Link to="/register">
-                  <button className="flex items-center space-x-2 bg-transparent border-2 border-[#1E1B4B] text-[#1E1B4B] font-bold py-2 px-4 rounded drop-shadow-xl transition duration-500 ease-in-out hover:bg-gray-100 hover:text-black">
+                  <button className="flex items-center space-x-2 bg-transparent border-2 border-[#1E1B4B] text-[#1E1B4B] font-bold py-2 px-4 rounded drop-shadow-xl transition duration-500 ease-in-out hover:bg-gray-100 hover:opacity-80 hover:text-black">
                     Registrarse
                   </button>
                 </Link>
