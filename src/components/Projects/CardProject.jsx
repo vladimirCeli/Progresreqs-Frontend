@@ -53,7 +53,7 @@ const CardProject = ({ projects, handleDelete, navigate }) => {
               ))}
             </div>
           ) : (
-            <p className="text-lg mb-4 text-white">No hay proyectos</p>
+            <p className="text-lg mb-4 text-gray-800">No hay proyectos</p>
           )}
           </div>
       </div>

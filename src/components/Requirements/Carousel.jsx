@@ -70,7 +70,7 @@ const Carousel = ({ categories, loadSybCategories, setOpenModal }) => {
   };
 
   return (
-    <div className="mt-6 relative max-h-96 overflow-hidden">
+    <div className="mt-6 relative max-h-96 overflow-hidden xl:px-5">
       <Slider {...settings} className="overflow-hidden">
         {categories.map((c) => (
           <div

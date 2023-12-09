@@ -175,7 +175,7 @@ const Questions = () => {
 
   return (
     <div>
-      <div className="container mx-auto">
+      <div className="container mx-auto xl:px-5">
         <h1 className="text-4xl font-bold mb-4">Preguntas</h1>
         <p className="text-lg mb-4">
           Página {currentPage} de {totalPages}

@@ -187,7 +187,7 @@ const Subcategories = () => {
 
   return (
     <div>
-      <div className="container mx-auto">
+      <div className="container mx-auto xl:px-5">
         <h1 className="text-4xl font-bold mb-4">
           Subcategoría de la categoría: {categorieRequirement || "Cargando..."}
         </h1>

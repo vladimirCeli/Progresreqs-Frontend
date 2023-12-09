@@ -15,7 +15,7 @@ const Tasks = ({
 }) => {
   return (
     <>
-      <div className="flex flex-col items-center mt-5">
+      <div className="flex flex-col items-center mt-5 xl:px-5">
         <h1 className="font-bold text-lg mb-4 text-center">Lista de tareas</h1>
         <div className="mb-2"></div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

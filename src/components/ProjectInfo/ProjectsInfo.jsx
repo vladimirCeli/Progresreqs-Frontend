@@ -22,7 +22,7 @@ const ProjectsInfo = ({
 }) => {
   return (
     <>
-      <div className="mt-2 text-center">
+      <div className="mt-2 text-center xl:px-5">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           Información del proyecto
         </h1>

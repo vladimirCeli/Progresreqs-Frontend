@@ -458,7 +458,7 @@ export default function Projects() {
           <>
             <div>
               {projectProgress ? (
-                <div>
+                <div className="xl:px-5">
                   <div className="relative pt-1">
                     <div className="flex mb-2 items-center justify-between">
                       <div>

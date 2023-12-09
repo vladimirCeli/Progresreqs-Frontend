@@ -4,7 +4,7 @@ const RequirementsNoFunctionals = ({
     requirements
   }) => {
       return (
-          <div className="container mx-auto bg-white p-4 rounded-lg shadow-lg text-center items-center">
+          <div className="container mx-auto bg-white p-4 rounded-lg shadow-lg text-center items-center xl:px-5">
           <div className="max-w-sm mx-auto">
             <div className="w-full border-2 border-gray-800 mb-2">
               <table className="w-full">

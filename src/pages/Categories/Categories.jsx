@@ -136,7 +136,7 @@ const Categories = () => {
 
   return (
     <div>
-      <div className="container mx-auto">
+      <div className="container mx-auto xl:px-5">
         <h1 className="text-4xl font-bold mb-4">Categorías</h1>
         <div className="m-5">
           <button

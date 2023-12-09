@@ -42,7 +42,7 @@ export default function Example() {
         className="p-2 fixed w-full top-0 z-50"
         style={{ backgroundColor: "#0c2342" }}
       >
-        {({ open }) => (
+        {({ open, close }) => (
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px6 lg:px8">
               <div className="flex items-center justify-between">
@@ -112,6 +112,9 @@ export default function Example() {
                             userRoles === 1 && (
                               <Link
                                 to="/managequestionnaire"
+                                onClick={() => {
+                                  Disclosure.close();
+                                }}
                                 className={classNames(
                                   active ? "bg-gray-700" : "",
                                   "block px-4 py-2 text-sm text-gray-50 font-medium w-48"
@@ -127,6 +130,9 @@ export default function Example() {
                             userRoles === 1 && (
                               <Link
                                 to="/categoriesecurity"
+                                onClick={() => {
+                                  Disclosure.close();
+                                }}
                                 className={classNames(
                                   active ? "bg-gray-700" : "",
                                   "block px-4 py-2 text-sm text-gray-50 font-medium w-48"
@@ -141,6 +147,9 @@ export default function Example() {
                           {({ active }) => (
                             <Link
                               to="/listsprojects"
+                              onClick={() => {
+                                Disclosure.close();
+                              }}
                               className={classNames(
                                 active ? "bg-gray-700" : "",
                                 "block px-4 py-2 text-sm text-gray-50 font-medium w-48"
