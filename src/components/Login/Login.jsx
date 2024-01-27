@@ -34,7 +34,7 @@ const Login = () => {
 
   useEffect(() => {
     setErrors("");
-  }, [values]);
+  }, [values, setErrors]);
 
   const [, setLoginSuccessful] = useState(false);
 
@@ -72,6 +72,8 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
+      setErrors("Error al procesar la solicitud. Por favor, inténtelo de nuevo.");
     }
   };
 
@@ -127,9 +129,11 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl w-full transition duration-300 ease-in-out"
+            className={`bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl w-full transition duration-300 ease-in-out ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Iniciar sesión
+            {loading ? "Cargando..." : "Iniciar sesión"}
           </button>
         </form>
         <Link

@@ -251,15 +251,11 @@ const Register = ({ onSuccessRegistration }) => {
           <button
             type="submit"
             disabled={loading}
-            className="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl w-full transition duration-300 ease-in-out"
+            className={`bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-3 rounded-xl w-full transition duration-300 ease-in-out ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Registrarse
-            {loading && (
-              <svg
-                className="animate-spin h-5 w-5 ml-2"
-                viewBox="0 0 24 24"
-              ></svg>
-            )}
+            {loading ? "Cargando..." : "Registrarse"}
           </button>
           <div className="text-center mt-4 w-full">
             <p className="text-sm text-gray-600">

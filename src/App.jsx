@@ -31,8 +31,6 @@ import GraphicsResults from "./components/GraphicsResults";
 import SelectReq from "./components/SelectReq";
 import NotFoundError from "./components/Error/NotFoundError";
 import Unauthorized from "./components/Error/Unauthorized";
-import Container from "./components/ContainerEle";
-import Footer from "./components/Home/Footer";
 import useAuth from "./hooks/useAuth";
 import useLogout from "./hooks/useLogout";
 import Spractices from "./components/SimulationsP"
