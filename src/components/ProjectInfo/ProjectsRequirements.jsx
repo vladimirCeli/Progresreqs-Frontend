@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const RequirementsProjects = ({
   requirements,
   moment,
@@ -56,10 +57,15 @@ const RequirementsProjects = ({
               </div>
             </div>
           ))
-        ) : errors ? (
-          <h6 className="mb-4 text-white font-semibold">{errors}</h6>
         ) : (
-          <h6 className="mb-4 text-white font-semibold">No hay requisitos</h6>
+          <div className="container mx-auto px-4 text-center">
+          {errors ? (
+            <p className="text-lg text-gray-600">{errors}</p>
+          ) : (
+            <p className="text-lg text-gray-600">No hay requisitos</p>
+          )}
+        </div>
+        
         )}
       </div>
     </div>

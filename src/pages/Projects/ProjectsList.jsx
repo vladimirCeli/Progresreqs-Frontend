@@ -42,7 +42,7 @@ const ProjectsList = () => {
         setDeleteModalOpen(false);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

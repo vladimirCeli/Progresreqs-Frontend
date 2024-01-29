@@ -28,6 +28,8 @@ export const requirementsNotFunctional = `${baseURl}/requirements/notfunctional/
 
 export const requirementsCheck = `${baseURl}/requirements/check/`;
 
+export const requirementsNumber = `${baseURl}/requirements/number/`;
+
 export const categoriesApi = `${baseURl}/categorie`;
 
 export const categoriesbyidApi = `${baseURl}/categorie/`;

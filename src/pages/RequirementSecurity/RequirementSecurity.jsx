@@ -49,8 +49,6 @@ const RequirementSecurity = () => {
     try {
       const response = await fetch(subcategoriesApiId + params.id);
       const data = await response.json();
-      console.log(data);
-      console.log(data.name);
       setSubcategorie(data.name);
     } catch (error) {
       console.error("Error al obtener la categoría de requerimientos:", error);

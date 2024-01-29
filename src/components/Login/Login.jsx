@@ -71,7 +71,6 @@ const Login = () => {
         setErrors(data.message);
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
       setErrors("Error al procesar la solicitud. Por favor, inténtelo de nuevo.");
     }

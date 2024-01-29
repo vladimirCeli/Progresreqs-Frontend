@@ -26,8 +26,6 @@ const PersistentUser = () => {
   }, []);
 
   useEffect(() => { }, [isLoading]);
-  console.log(`isLoading: ${isLoading}`);
-  console.log(`aT: ${JSON.stringify(auth?.accessToken)}`);
   return (
     <>{!persist ? <Outlet /> : isLoading ? <div className="flex items-center justify-center h-screen">
       <div className="">

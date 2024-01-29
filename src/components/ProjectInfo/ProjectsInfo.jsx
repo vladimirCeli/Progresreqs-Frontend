@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import RequirementModal from "./RequirementFormM";
 import RequirementModalN from "./RequirementFormMN";
 
@@ -8,6 +9,8 @@ const ProjectsInfo = ({
   open,
   handleClose,
   newRequirement,
+  setNewRequirement,
+  initialState,
   changeRequirements,
   submitRequirements,
   loading,
@@ -17,6 +20,8 @@ const ProjectsInfo = ({
   handleOpenNotFunctionals,
   handleCloseNotFunctionals,
   newRequirementsNotFuntional,
+  initialState2,
+  setNewRequirementsNotFuntional,
   changeRequirementsNotFunctionals,
   submitRequirementsNotFunctionals,
 }) => {
@@ -40,10 +45,13 @@ const ProjectsInfo = ({
           <div className="mt-5 flex justify-end space-x-4">
             <button
               onClick={handleOpen}
-              className="w-full bg-indigo-900 text-white py-2 rounded-lg hover:bg-indigo-800 transition duration-300 ease-in-out"
+              
+              className="w-full py-2 rounded-lg transition duration-300 ease-in-out bg-indigo-900 text-white hover:bg-indigo-800"
+
             >
               Agregar Requisitos funcionales
             </button>
+
             <button
               onClick={handleOpenNotFunctionals}
               className="w-full bg-indigo-900 text-white py-2 rounded-lg hover:bg-indigo-800 transition duration-300 ease-in-out"
@@ -57,6 +65,8 @@ const ProjectsInfo = ({
         open={open}
         handleClose={handleClose}
         newRequirement={newRequirement}
+        setNewRequirement={setNewRequirement}
+        initialState={initialState}
         changeRequirements={changeRequirements}
         submitRequirements={submitRequirements}
         loading={loading}
@@ -66,6 +76,8 @@ const ProjectsInfo = ({
         open={openNotFunctional}
         handleClose={handleCloseNotFunctionals}
         newRequirement={newRequirementsNotFuntional}
+        setNewRequirement={setNewRequirementsNotFuntional}
+        initialState={initialState2}
         changeRequirements={changeRequirementsNotFunctionals}
         submitRequirements={submitRequirementsNotFunctionals}
         loading={loading}

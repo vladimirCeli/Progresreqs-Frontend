@@ -90,10 +90,7 @@ export default function Requirements() {
       try {
         const resp = await fetch(requirementsCheck + id);
         const data = await resp.json();
-        console.log("Estas son las respuestas");
         setCheckRequirements(data.isNotFuntional);
-        console.log("Estas son las respuestas");
-        console.log(data);
       } catch (error) {
         console.error("Error al cargar las respuestas:", error);
       }
@@ -108,8 +105,6 @@ export default function Requirements() {
       const resp = await fetch(subcategoriesCategoriesApiId + id);
       const data = await resp.json();
       setSubcategories(data);
-      console.log("Estas son las subcategorías");
-      console.log(data);
     } catch (error) {
       console.error("Error al cargar las subcategorías:", error);
     }
@@ -121,8 +116,6 @@ export default function Requirements() {
         const resp = await fetch(requirementsecSubcategoriesApiId + id);
         const data = await resp.json();
         setSecurityRequirements(data);
-        console.log("Estos son los requisitos de seguridad");
-        console.log(data);
       }
     } catch (error) {
       console.error("Error al cargar los requisitos de seguridad:", error);
@@ -131,9 +124,6 @@ export default function Requirements() {
 
   const saveSelections = (id, selectedSecurityRequirements) => {
     // Crear un objeto que contenga los IDs de los requisitos de seguridad seleccionados
-    console.log("este es el id del requisitos" + params.id);
-    console.log("Estas son las respuestas seleccionadas");
-    console.log(selectedSecurityRequirements);
     const selections = {
       requirements_id: id, // Supongo que params.id contiene el ID de los requisitos normales
       requirements_security_id: selectedSecurityRequirements,
@@ -149,9 +139,6 @@ export default function Requirements() {
     })
       .then((response) => {
         if (response.ok) {
-          console.log(
-            "Selecciones guardadas exitosamente en la base de datos."
-          );
 
           loadTasks(params.id);
           //closeModal();

@@ -155,9 +155,6 @@ const RequirementSelection = () => {
 
   const saveSelections = () => {
     // Crear un objeto que contenga los IDs de los requisitos de seguridad seleccionados
-    console.log('este es el id del requisitos' + params.id)
-    console.log('Estas son las respuestas seleccionadas')
-    console.log(selectedSecurityRequirements);
     const selections = {
       requirements_id: params.id, // Supongo que params.id contiene el ID de los requisitos normales
       requirements_security_id: selectedSecurityRequirements,

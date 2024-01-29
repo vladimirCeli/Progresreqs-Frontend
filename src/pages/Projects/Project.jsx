@@ -38,7 +38,6 @@ const Project = () => {
 
     const loadUser = async () => {
       const person = await RequireIdentify(auth.username);
-      console.log("PERSONA: " + person);
       if (person !== null) {
         setUser(person);
       } else {
@@ -88,7 +87,7 @@ const Project = () => {
           toast.error(data.message);
         }
       } else {
-        console.log("No se pudo obtener el ID de la persona.");
+        console.error("No se pudo obtener el ID de la persona.");
       }
     }
     setLoading(false);

@@ -22,16 +22,12 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
     try {
       const response = await fetch(questionnairesAdditional + paramsId);
       const data = await response.json();
-      console.log("esta es la adicional data" + data);
       const questionnairesWithResponses = data.questionnairesWithResponses || [];
       const questionnairesWithoutResponses = data.questionnairesWithoutResponses || [];
 
       // Actualizar los estados correspondientes
       setQuestionnaire(questionnairesWithResponses);
       setAdditionalQuestionnaires(questionnairesWithoutResponses);
-      
-      console.log("Cuestionarios con respuestas:", questionnairesWithResponses);
-      console.log("Cuestionarios sin respuestas:", questionnairesWithoutResponses);
     } catch (error) {
       console.error("Error al cargar cuestionarios adicionales:", error);
     }
@@ -51,7 +47,6 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
         body: JSON.stringify({ selectedId }),
       });
       const data = await response.json();
-      console.log("data de handle selección adicional" + data);
 
       // Filtra los cuestionarios ya seleccionados
       const newQuestionnaires = Array.isArray(data)
@@ -94,7 +89,6 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
       getResponseByProjectIdApi + project_id + "/" + questionnaire_id
     );
     const data = await response.json();
-    console.log("data de fetch and check" + data);
     return data.length > 0;
   };
 
@@ -104,8 +98,8 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
 
 
   return (
-    <div className="container mx-auto px-4 text-center">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">
+    <div className="container mx-auto px-4 text-center p-4">
+      <h1 className="text-2xl font-bold text-gray-800 mb-4">
         Lista de cuestionarios habilitados
       </h1>
       {questionnaires.length > 0 ? (
@@ -201,9 +195,8 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
       {additionalQuestionnaires.length > 0 && (
         <div className="mt-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            Seleccione un cuestionario adicional
+            Puede seleccionar otro cuestionario
           </h2>
-          {console.log("este es el cuestionario adicional" + hasResponsesSelected)}
           <select
             className="p-2 border border-gray-300 rounded"
             onChange={(e) =>
@@ -212,7 +205,7 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
             value={selectedAdditionalQuestionnaire || ""}
           >
             <option value="" disabled>
-              Seleccionar cuestionario adicional
+              Seleccionar cuestionario
             </option>
             {additionalQuestionnaires.map((additionalProject) => (
               <option

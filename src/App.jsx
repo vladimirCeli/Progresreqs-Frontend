@@ -76,8 +76,6 @@ function App() {
   }, [auth]);
 
   useEffect(() => {
-    console.log(`accessToken APP : ${auth?.accessToken}`);
-    console.log(`userLoggedIn APP : ${userLoggedIn}`);
     const resetInactivity = () => {
       if (inactivityTimeoutRef.current) {
         clearTimeout(inactivityTimeoutRef.current);

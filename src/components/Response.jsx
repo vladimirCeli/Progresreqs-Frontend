@@ -39,9 +39,6 @@ const Response = () => {
         questionnairesComplete + questionnaireId
       );
       setQuestionnaire(response.data);
-      console.log("Cuestionario cargado");
-      console.log(response.data);
-      console.log("Score del cuestionario");
     } catch (error) {
       console.error("Error al obtener el cuestionario:", error);
     }

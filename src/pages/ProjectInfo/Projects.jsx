@@ -12,6 +12,7 @@ import {
   getResponseByProjectIdApi,
   requirementsNotFunctional,
   projectsbyprogressid,
+  requirementsNumber,
 } from "../../Services/Fetch";
 
 import ProjectsSteps from "../../components/ProjectInfo/ProjectsSteps";
@@ -19,6 +20,22 @@ import ProjectsQuestionnaires from "../../components/ProjectInfo/ProjectsQuestio
 import ProjectsInfo from "../../components/ProjectInfo/ProjectsInfo";
 import RequirementsProjects from "../../components/ProjectInfo/ProjectsRequirements";
 import RequirementsNotFunctionalProjects from "../../components/ProjectInfo/ProjectsRequirementsNotFunctional";
+
+const initialState = {
+  ident_requirement_id: "",
+  name: "",
+  characteristicsr: "",
+  description: "",
+  req_no_funtional: "",
+  priority_req: "",
+};
+
+const initialState2 = {
+  ident_requirement_id: "",
+  name: "",
+  description: "",
+  priority_req: "",
+};
 
 export default function Projects() {
   const [projectProgress, setProjectProgress] = useState(null);
@@ -31,23 +48,11 @@ export default function Projects() {
   });
 
   const [requirements, setRequirements] = useState([]);
-  const [newRequirement, setNewRequirement] = useState({
-    ident_requirement_id: "",
-    name: "",
-    characteristicsr: "",
-    description: "",
-    req_no_funtional: "",
-    priority_req: "",
-  });
+  const [newRequirement, setNewRequirement] = useState(initialState);
 
   const [requirementsNotFuntional, setRequirementsNotFuntional] = useState([]);
   const [newRequirementsNotFuntional, setNewRequirementsNotFuntional] =
-    useState({
-      ident_requirement_id: "",
-      name: "",
-      description: "",
-      priority_req: "",
-    });
+    useState(initialState2);
 
   const [questionnaires, setQuestionnaires] = useState({
     name: "",
@@ -65,121 +70,94 @@ export default function Projects() {
   const [editingIdNotFunctionals, setEditingIdNotFunctionals] = useState(null);
   const navigate = useNavigate();
   const [errors, setErrors] = useState("");
+  const [errorsNotFunctionals, setErrorsNotFunctionals] = useState("");
   const params = useParams();
+  // eslint-disable-next-line no-unused-vars
   const [hasResponsesSteps2Q, setHasResponsesSteps2Q] = useState(false);
 
-  const submitRequirements = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      if (editingId) {
-        const response = await fetch(requirementtoedit + editingId, {
-          method: "PUT",
-          body: JSON.stringify(newRequirement),
+  const [requirementNumber, setRequirementsNumber] = useState(0);
+  const [requirementNumberNotFunctional, setRequirementsNumberNotFunctional] =
+    useState(0);
+
+    const submitRequirements = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        const requestData = {
+          method: editingId ? "PUT" : "POST",
+          body: JSON.stringify(
+            editingId
+              ? { ...newRequirement }
+              : { ...newRequirement, project_id: params.id }
+          ),
           headers: {
             "Content-Type": "application/json",
           },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
-        setEditingId(null);
-      } else {
-        const idproject = params.id;
-        const requirementsWithProjectId = {
-          ...newRequirement,
-          project_id: idproject,
         };
-
-        const response = await fetch(requirementstoprojects, {
-          method: "POST",
-          body: JSON.stringify(requirementsWithProjectId),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        if (response.ok) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
-      }
-      setLoading(false);
-      setNewRequirement({
-        ident_requirement_id: "",
-        name: "",
-        characteristicsr: "",
-        description: "",
-        req_no_funtional: "",
-        priority_req: "",
-      });
-      loadRequirements(params.id);
-      handleClose();
-    } catch (error) {
-      console.error("Error al agregar los requisitos:", error.message);
-    }
-  };
-
-  const submitRequirementsNotFunctionals = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      if (editingIdNotFunctionals) {
+  
         const response = await fetch(
-          requirementtoedit + editingIdNotFunctionals,
-          {
-            method: "PUT",
-            body: JSON.stringify(newRequirementsNotFuntional),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          editingId ? requirementtoedit + editingId : requirementstoprojects,
+          requestData
         );
+  
         const data = await response.json();
         if (response.ok) {
           toast.success(data.message);
         } else {
           toast.error(data.message);
         }
-        setEditingIdNotFunctionals(null);
-      } else {
-        const idproject = params.id;
-        const requirementsWithProjectId = {
-          ...newRequirementsNotFuntional,
-          project_id: idproject,
-        };
+  
+        setEditingId(null);
+        setLoading(false);
+        setNewRequirement(initialState);
+        loadRequirements(params.id);
+        loadQuestionnaire();
+        handleClose();
+      } catch (error) {
+        console.error("Error al agregar los requisitos:", error.message);
+      }
+    };
 
-        const response = await fetch(requirementstoprojects, {
-          method: "POST",
-          body: JSON.stringify(requirementsWithProjectId),
+    const submitRequirementsNotFunctionals = async (e) => {
+      e.preventDefault();
+      setLoading(true);
+      try {
+        const requestData = {
+          method: editingIdNotFunctionals ? "PUT" : "POST",
+          body: JSON.stringify(
+            editingIdNotFunctionals
+              ? { ...newRequirementsNotFuntional }
+              : { ...newRequirementsNotFuntional, project_id: params.id }
+          ),
           headers: {
             "Content-Type": "application/json",
           },
-        });
+        };
+  
+        const response = await fetch(
+          editingIdNotFunctionals
+            ? requirementtoedit + editingIdNotFunctionals
+            : requirementstoprojects,
+          requestData
+        );
+  
         const data = await response.json();
         if (response.ok) {
           toast.success(data.message);
         } else {
           toast.error(data.message);
         }
+  
+        setEditingIdNotFunctionals(null);
+        setLoading(false);
+        setNewRequirementsNotFuntional(initialState2);
+        loadRequirementsNotFunctionals(params.id);
+        loadQuestionnaire();
+        handleCloseNotFunctionals();
+      } catch (error) {
+        console.error("Error al agregar los requisitos:", error.message);
       }
-      setLoading(false);
-      setNewRequirementsNotFuntional({
-        ident_requirement_id: "",
-        name: "",
-        description: "",
-        priority_req: "",
-      });
-      loadRequirementsNotFunctionals(params.id);
-      handleCloseNotFunctionals();
-    } catch (error) {
-      console.error("Error al agregar los requisitos:", error.message);
-    }
-  };
+    };
 
   const handleDelete = async (id) => {
     try {
@@ -201,6 +179,7 @@ export default function Projects() {
       loadRequirements(params.id);
       loadRequirementsNotFunctionals(params.id);
       fetchProjectProgress();
+      loadQuestionnaire();
     } catch (error) {
       console.error("Error al eliminar el requisito:", error.message);
     }
@@ -230,6 +209,7 @@ export default function Projects() {
         setErrors(data.message);
         setRequirements([]);
       }
+      
     } catch (error) {
       console.error("Error al cargar los requisitos:", error);
     }
@@ -242,9 +222,10 @@ export default function Projects() {
       if (Array.isArray(data)) {
         setRequirementsNotFuntional(data);
       } else {
-        setErrors(data.message);
+        setErrorsNotFunctionals(data.message);
         setRequirementsNotFuntional([]);
       }
+      
     } catch (error) {
       console.error("Error al cargar los requisitos:", error);
     }
@@ -276,10 +257,9 @@ export default function Projects() {
     try {
       const response = await fetch(projectsbyprogressid + params.id);
       const data = await response.json();
-  
+
       if (data && data.progress !== undefined) {
         const convertedNumber = parseFloat(data.progress);
-        console.log("convertedNumber", convertedNumber);
         setProjectProgress(convertedNumber);
       } else {
         console.error("Formato de respuesta incorrecto:", data);
@@ -288,109 +268,121 @@ export default function Projects() {
       console.error("Error al obtener el progreso del proyecto:", error);
     }
   };
-  
 
-  useEffect(() => {
-    const loadQuestionnaire = async () => {
-      const project_id = params.id;
+  const loadQuestionnaire = async () => {
+    fetchRequirementsNumber();
+    const project_id = params.id;
 
-      try {
-        const response = await fetch(questionnairesPublished + project_id);
-        const data = await response.json();
+    try {
+      const response = await fetch(questionnairesPublished + project_id);
+      const data = await response.json();
 
-        const questionnairesStep1 = data.filter((q) => q.steps === 1);
+      const questionnairesStep1 = data.filter((q) => q.steps === 1);
 
-        if (questionnairesStep1.length > 0) {
-          const hasResponsesStep1 = await checkResponses(
+      if (questionnairesStep1.length > 0) {
+        const hasResponsesStep1 = await checkResponses(
+          project_id,
+          questionnairesStep1
+        );
+
+        let selectedQuestionnaires;
+
+        if (hasResponsesStep1) {
+          const questionnairesStep1And2 = data.filter(
+            (q) => q.steps === 1 || q.steps === 2
+          );
+          await checkResponses(project_id, questionnairesStep1And2);
+          selectedQuestionnaires = questionnairesStep1And2;
+
+          const hasResponsesStep2 = await checkResponses(
             project_id,
-            questionnairesStep1
+            questionnairesStep1And2
           );
 
-          let selectedQuestionnaires;
-
-          if (hasResponsesStep1) {
-            const questionnairesStep1And2 = data.filter(
-              (q) => q.steps === 1 || q.steps === 2
-            );
-            await checkResponses(project_id, questionnairesStep1And2);
-            selectedQuestionnaires = questionnairesStep1And2;
-
-            const hasResponsesStep2 = await checkResponses(
+          if (hasResponsesStep2) {
+            const questionnairesteps2 = data.filter((q) => q.steps === 2);
+            const responsesallStep2 = await checkResponses(
               project_id,
-              questionnairesStep1And2
+              questionnairesteps2
             );
-
-            if (hasResponsesStep2) {
-              const questionnairesteps2 = data.filter((q) => q.steps === 2);
-              const responsesallStep2 = await checkResponses(
-                project_id,
-                questionnairesteps2
-              );
-              if (responsesallStep2) {
-                setHasResponsesSteps2Q(true);
-              } else {
-                setHasResponsesSteps2Q(false);
-              }
+            if (responsesallStep2) {
+              setHasResponsesSteps2Q(true);
+            } else {
+              setHasResponsesSteps2Q(false);
             }
-
-            if (hasResponsesStep2) {
-              const questionnairesStep1And2And3 = data.filter(
-                (q) => q.steps === 1 || q.steps === 2 || q.steps === 0
-              );
-              await checkResponses(project_id, questionnairesStep1And2And3);
-              selectedQuestionnaires = questionnairesStep1And2And3;
-            }
-          } else {
-            selectedQuestionnaires = questionnairesStep1;
           }
-          console.log("selectedQuestionnaires", selectedQuestionnaires);
-          setQuestionnaires(selectedQuestionnaires);
+
+          if (hasResponsesStep2) {
+            const questionnairesStep1And2And3 = data.filter(
+              (q) => q.steps === 1 || q.steps === 2 || q.steps === 0
+            );
+            await checkResponses(project_id, questionnairesStep1And2And3);
+            selectedQuestionnaires = questionnairesStep1And2And3;
+          }
         } else {
-          setQuestionnaires([]);
+          selectedQuestionnaires = questionnairesStep1;
         }
-      } catch (error) {
-        console.error("Error al cargar cuestionarios:", error);
+        setQuestionnaires(selectedQuestionnaires);
+      } else {
+        setQuestionnaires([]);
       }
-    };
+    } catch (error) {
+      console.error("Error al cargar cuestionarios:", error);
+    }
+  };
 
-    const checkResponses = async (project_id, questionnaires) => {
-      for (const questionnaire of questionnaires) {
-        const hasResponses = await fetchAndCheckResponses(
-          project_id,
-          questionnaire._id
-        );
-        if (hasResponses) {
-          return true;
-        }
-      }
-      return false;
-    };
-
-    const fetchAndCheckResponses = async (project_id, questionnaire_id) => {
-      const response = await fetch(
-        getResponseByProjectIdApi + project_id + "/" + questionnaire_id
+  const checkResponses = async (project_id, questionnaires) => {
+    for (const questionnaire of questionnaires) {
+      const hasResponses = await fetchAndCheckResponses(
+        project_id,
+        questionnaire._id
       );
-      const responseData = await response.json();
-      return responseData.length > 0;
-    };
-
-    const loadProject = async (id) => {
-      try {
-        const response = await fetch(projectsbyid + id);
-
-        if (response.ok) {
-          setProject({
-            ...project,
-            ...(await response.json()),
-          });
-        } else {
-          console.log("No se encontró la propiedad 'name' en el objeto JSON.");
-        }
-      } catch (error) {
-        console.error("Error al cargar los proyectos:", error);
+      if (hasResponses) {
+        return true;
       }
-    };
+    }
+    return false;
+  };
 
+  const fetchAndCheckResponses = async (project_id, questionnaire_id) => {
+    const response = await fetch(
+      getResponseByProjectIdApi + project_id + "/" + questionnaire_id
+    );
+    const responseData = await response.json();
+    return responseData.length > 0;
+  };
+
+  const loadProject = async (id) => {
+    try {
+      const response = await fetch(projectsbyid + id);
+
+      if (response.ok) {
+        setProject({
+          ...project,
+          ...(await response.json()),
+        });
+      } else {
+        console.error("Error al cargar el proyecto:", response);
+      }
+    } catch (error) {
+      console.error("Error al cargar los proyectos:", error);
+    }
+  };
+
+  const fetchRequirementsNumber = async () => {
+    try {
+      const response = await fetch(requirementsNumber + params.id);
+      const data = await response.json();
+  
+      setRequirementsNumber(data.numberRequirements);
+      setRequirementsNumberNotFunctional(data.numberRequirementsNotFunctional);
+      
+    } catch (error) {
+      console.error("Error al obtener el número de requisitos:", error);
+    }
+  };
+
+  useEffect(() => {
     if (params.id) {
       loadProject(params.id);
       loadRequirements(params.id);
@@ -398,11 +390,22 @@ export default function Projects() {
       loadQuestionnaire();
       fetchProjectProgress();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const [open, setOpen] = useState(false);
 
   const [openNotFunctional, setOpenNotFunctional] = useState(false);
+
+  const [openQues, setOpenQues] = useState(false);
+
+  const handleOpenQues = () => {
+    setOpenQues(true);
+  };
+
+  const handleCloseQues = () => {
+    setOpenQues(false);
+  };
 
   const handleOpen = () => {
     setOpen(true);
@@ -416,14 +419,7 @@ export default function Projects() {
     setOpen(false);
     if (editingId !== null) {
       setEditingId(null);
-      setNewRequirement({
-        ident_requirement_id: "",
-        name: "",
-        characteristicsr: "",
-        description: "",
-        req_no_funtional: "",
-        priority_req: "",
-      });
+      setNewRequirement(initialState);
     }
   };
 
@@ -431,126 +427,142 @@ export default function Projects() {
     setOpenNotFunctional(false);
     if (editingIdNotFunctionals !== null) {
       setEditingIdNotFunctionals(null);
-      setNewRequirementsNotFuntional({
-        ident_requirement_id: "",
-        name: "",
-        description: "",
-        priority_req: "",
-      });
+      setNewRequirementsNotFuntional(initialState2);
     }
   };
 
   return (
     <div className="">
       <div className="container mx-auto">
-
+        <div className="mt-2 text-center xl:px-5">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            Cuestionarios OWASP SAMM
+          </h1>
+          <button
+            className="text-white font-bold py-2 px-4 rounded"
+            onClick={handleOpenQues}
+            style={{ backgroundColor: "#2c3e50" }}
+            onMouseOver={(e) => (e.target.style.backgroundColor = "#465669")}
+            onMouseLeave={(e) => (e.target.style.backgroundColor = "#2c3e50")}
+          >
+            Ver información
+          </button>
+        </div>
         <ProjectsSteps
-          beforeImage={"../../../img/mdz1.png"} 
+          open={openQues}
+          handleClose={handleCloseQues}
+          beforeImage={"../../../img/mdz1.png"}
           afterImage={"../../../img/mdz2.png"}
         />
 
-        <ProjectsQuestionnaires
-          questionnaires={questionnaires}
-          paramsId={params.id}
-          navigate={navigate}
-        />
-        {hasResponsesSteps2Q ? (
-          <>
-            <div>
-              {projectProgress ? (
-                <div className="xl:px-5">
-                  <div className="relative pt-1">
-                    <div className="flex mb-2 items-center justify-between">
-                      <div>
-                        <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-900 bg-indigo-200">
-                          {typeof projectProgress === "number" &&
-                          !isNaN(projectProgress) ? (
-                            <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-900 bg-indigo-200">
-                              {projectProgress.toFixed(2)}%
-                            </span>
-                          ) : (
-                            <p>
-                              El progreso del proyecto no es un número válido.
-                            </p>
-                          )}
-                        </span>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-xs font-semibold inline-block text-indigo-900">
-                          {projectProgress === 100 ? "Completo" : "En progreso"}
-                        </span>
-                      </div>
+        {requirementNumber > 0 && requirementNumberNotFunctional > 0 ? (
+          <ProjectsQuestionnaires
+            questionnaires={questionnaires}
+            paramsId={params.id}
+            navigate={navigate}
+          />
+        ) : (
+          <p className="text-lg text-center text-gray-600 my-4">
+            <span className="font-bold">
+              ¡Esperamos que añadas los requisitos!
+            </span>{" "}
+            para completar los cuestionarios y continuar con el análisis de tu
+            proyecto {project.name}.
+          </p>
+        )}
+        <>
+          <div>
+            {projectProgress ? (
+              <div className="xl:px-5">
+                <div className="relative pt-1">
+                  <div className="flex mb-2 items-center justify-between">
+                    <div>
+                      <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-900 bg-indigo-200">
+                        {typeof projectProgress === "number" &&
+                        !isNaN(projectProgress) ? (
+                          <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-indigo-900 bg-indigo-200">
+                            {projectProgress.toFixed(2)}%
+                          </span>
+                        ) : (
+                          <p>
+                            El progreso del proyecto no es un número válido.
+                          </p>
+                        )}
+                      </span>
                     </div>
-                    <div className="flex">
-                      <div className="flex-grow overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
-                        <div
-                          style={{ width: `${projectProgress}%` }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-900"
-                        ></div>
-                      </div>
+                    <div className="text-right">
+                      <span className="text-xs font-semibold inline-block text-indigo-900">
+                        {projectProgress === 100 ? "Completo" : "En progreso"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex">
+                    <div className="flex-grow overflow-hidden h-2 mb-4 text-xs flex rounded bg-indigo-200">
+                      <div
+                        style={{ width: `${projectProgress}%` }}
+                        className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-indigo-900"
+                      ></div>
                     </div>
                   </div>
                 </div>
-              ) : (
-                <p>Aún no hay requisitos completados...</p>
-              )}
-            </div>
+              </div>
+            ) : (
+              <p className="text-lg text-center text-gray-600 my-4">
+                Aún no hay requisitos completados para ver el progreso de los
+                mismos
+              </p>
+            )}
+          </div>
 
-            <ProjectsInfo
-              project={project}
-              handleOpen={handleOpen}
-              moment={moment}
-              open={open}
-              handleClose={handleClose}
-              newRequirement={newRequirement}
-              changeRequirements={changeRequirements}
-              submitRequirements={submitRequirements}
-              loading={loading}
-              editingId={editingId}
-              editingIdNotFunctionals={editingIdNotFunctionals}
-              openNotFunctional={openNotFunctional}
-              handleOpenNotFunctionals={handleOpenNotFunctionals}
-              handleCloseNotFunctionals={handleCloseNotFunctionals}
-              newRequirementsNotFuntional={newRequirementsNotFuntional}
-              changeRequirementsNotFunctionals={
-                changeRequirementsNotFunctionals
-              }
-              submitRequirementsNotFunctionals={
-                submitRequirementsNotFunctionals
-              }
-            />
+          <ProjectsInfo
+            requirementNumber={requirementNumberNotFunctional}
+            project={project}
+            handleOpen={handleOpen}
+            moment={moment}
+            open={open}
+            handleClose={handleClose}
+            newRequirement={newRequirement}
+            setNewRequirement={setNewRequirement}
+            initialState={initialState}
+            changeRequirements={changeRequirements}
+            submitRequirements={submitRequirements}
+            loading={loading}
+            editingId={editingId}
+            editingIdNotFunctionals={editingIdNotFunctionals}
+            openNotFunctional={openNotFunctional}
+            handleOpenNotFunctionals={handleOpenNotFunctionals}
+            handleCloseNotFunctionals={handleCloseNotFunctionals}
+            newRequirementsNotFuntional={newRequirementsNotFuntional}
+            setNewRequirementsNotFuntional={setNewRequirementsNotFuntional}
+            initialState2={initialState2}
+            changeRequirementsNotFunctionals={changeRequirementsNotFunctionals}
+            submitRequirementsNotFunctionals={submitRequirementsNotFunctionals}
+          />
 
-            <RequirementsProjects
-              requirements={requirements}
-              moment={moment}
-              navigate={navigate}
-              handleDelete={handleDeleteConfirmation}
-              handleEdit={handleEdit}
-              errors={errors}
-            />
+          <RequirementsProjects
+            requirements={requirements}
+            moment={moment}
+            navigate={navigate}
+            handleDelete={handleDeleteConfirmation}
+            handleEdit={handleEdit}
+            errors={errors}
+          />
 
-            <RequirementsNotFunctionalProjects
-              requirements={requirementsNotFuntional}
-              moment={moment}
-              navigate={navigate}
-              handleDelete={handleDeleteConfirmation}
-              handleEdit={handleEditNotFunctionals}
-              errors={errors}
-            />
+          <RequirementsNotFunctionalProjects
+            requirements={requirementsNotFuntional}
+            moment={moment}
+            navigate={navigate}
+            handleDelete={handleDeleteConfirmation}
+            handleEdit={handleEditNotFunctionals}
+            errors={errorsNotFunctionals}
+          />
 
-            <Modal
-              open={deleteModalOpen}
-              onClose={() => setDeleteModalOpen(false)}
-              onDelete={() => handleDelete(reqToDeleteId)}
-            />
-          </>
-        ) : (
-          <p className="text-lg text-center text-gray-600 my-4">
-            <span className="font-bold">¡Esperamos tus respuestas!</span>{" "}
-            Completa los cuestionarios para continuar con el ingreso de los
-            requisitos del proyecto {project.name}.
-          </p>
-        )}
+          <Modal
+            open={deleteModalOpen}
+            onClose={() => setDeleteModalOpen(false)}
+            onDelete={() => handleDelete(reqToDeleteId)}
+          />
+        </>
       </div>
     </div>
   );
