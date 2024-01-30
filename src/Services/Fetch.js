@@ -1,6 +1,6 @@
-const baseURl = 'http://progresreqsapi.azurewebsites.net';
+const baseURl = 'https://progresreqsapi.azurewebsites.net';
 
-export const baseURLapi = 'http://progresreqsapi.azurewebsites.net/';
+export const baseURLapi = 'https://progresreqsapi.azurewebsites.net/';
 
 export const register = `${baseURl}/register`;
 
