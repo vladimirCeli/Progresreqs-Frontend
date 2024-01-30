@@ -11,6 +11,7 @@ import {
   tasksApiIdRequirement,
   tasksApiIdCompleted,
   tasksWriteApi,
+  tasksDeadlineApi,
   requirementsCheck,
 } from "../../Services/Fetch";
 import Tasks from "../../components/Requirements/Tasks";
@@ -68,6 +69,7 @@ export default function Requirements() {
   const [open, setOpen] = useState(false);
   const [viewDescriptionOpen, setViewDescriptionOpen] = useState(false);
   const [editedDescription, setEditedDescription] = useState("");
+  const [editedDeadline, setEditedDeadline] = useState("");
   const [selectedTask, setSelectedTask] = useState(null);
   const [requirements, setRequirements] = useState({});
   const [project, setProject] = useState({});
@@ -258,6 +260,49 @@ export default function Requirements() {
     setViewDescriptionOpen(false);
   };
 
+  const handleDeadlineChange = (taskId, value) => {
+    setEditedDeadline((prevDeadline) => ({
+      ...prevDeadline,
+      [taskId]: value,
+    }));
+  };
+
+  const handleSaveDeadline = async (task) => {
+    try {
+      if (task && editedDeadline[task.id]) {
+        const response = await fetch(tasksDeadlineApi + task.id, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            deadline: editedDeadline[task.id],
+          }),
+        });
+  
+        console.log("Save Deadline Response:", response);
+  
+        if (response.ok) {
+          const updatedTask = { ...task, deadline: editedDeadline[task.id] };
+          const updatedTasks = tasks.map((t) =>
+            t.id === updatedTask.id ? updatedTask : t
+          );
+          setTasks(updatedTasks);
+          setSelectedTask(null);
+          setEditedDeadline((prevDeadline) => ({
+            ...prevDeadline,
+            [task.id]: "",
+          }));
+        } else {
+          console.error("Error al guardar la fecha límite en el servidor");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   const handleSaveDescription = async () => {
     try {
       if (selectedTask) {
@@ -340,6 +385,10 @@ export default function Requirements() {
         toggleCompleted={toggleCompleted}
         handleEditDescription={handleEditDescription}
         handleViewDescription={handleViewDescription}
+        handleDeadlineChange={handleDeadlineChange}
+        handleSaveDeadline={handleSaveDeadline}
+        editedDeadline={editedDeadline}
+        setEditedDeadline={setEditedDeadline}
         variants={variants}
       />
 

@@ -1,6 +1,6 @@
-const baseURl = 'https://progresreqsapi.azurewebsites.net';
+const baseURl = 'http://localhost:4000';
 
-export const baseURLapi = 'https://progresreqsapi.azurewebsites.net/';
+export const baseURLapi = 'http://localhost:4000/';
 
 export const register = `${baseURl}/register`;
 
@@ -97,6 +97,8 @@ export const tasksApi = `${baseURl}/tasks`;
 export const tasksApiIdRequirement = `${baseURl}/tasks/requirement/`;
 
 export const tasksWriteApi = `${baseURl}/tasks/write_description/`;
+
+export const tasksDeadlineApi = `${baseURl}/tasks/deadline/`;
 
 export const tasksApiIdCompleted = `${baseURl}/tasks/completed/`;
 
