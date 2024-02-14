@@ -116,7 +116,7 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
             <div key={project._id}>
               <div className="bg-white rounded shadow p-4 transition duration-300 ease-in-out transform hover:scale-105 text-center bg-opacity-75">
                 <img
-                  src={"../../../public/img/cuestionario.png"}
+                  src="../../../img/cuestionario.png"
                   className="h-12 w-12 mx-auto mb-4"
                   style={{ color: "#2c3e50" }}
                 />
@@ -159,7 +159,7 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
               <div key={q._id}>
                 <div className="bg-white rounded shadow p-4 transition duration-300 ease-in-out transform hover:scale-105 text-center bg-opacity-75">
                   <img
-                    src={"../../../img/cuestionario.png"}
+                    src="../../../img/cuestionario.png"
                     className="h-12 w-12 mx-auto mb-4"
                     style={{ color: "#2c3e50" }}
                   />
