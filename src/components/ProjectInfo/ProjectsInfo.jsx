@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import RequirementModal from "./RequirementFormM";
 import RequirementModalN from "./RequirementFormMN";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import Tooltip from "../../hooks/useTooltip";
 
 const ProjectsInfo = ({
   project,
@@ -28,8 +30,19 @@ const ProjectsInfo = ({
   return (
     <>
       <div className="mt-2 text-center xl:px-5">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Información del proyecto
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center">
+          Información del proyecto             <Tooltip
+              content={
+                "Agrega los requisitos funcionales y no funcionales en formato IEEE830 para mostrar los cuestionarios disponibles"
+              }
+              position="bottom"
+            >
+              <QuestionMarkCircleIcon
+                height={24}
+                width={24}
+                className="text-blue-950 hover:underline cursor-pointer ml-2"
+              />
+            </Tooltip>
         </h1>
         <div className="mt-5 bg-white rounded-lg shadow-xl p-6 border border-gray-300 transition duration-300 ease-in-out transform hover:scale-105 bg-opacity-75">
           <h1 className="text-2xl font-bold mb-4 text-gray-800">

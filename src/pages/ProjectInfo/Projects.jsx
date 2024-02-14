@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
 import Modal from "../../components/Modal/DeleteConfirmationModal";
 import useToast from "../../hooks/useToast";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import Tooltip from "../../hooks/useTooltip";
 
 import {
   requirementstoprojects,
@@ -79,85 +81,85 @@ export default function Projects() {
   const [requirementNumberNotFunctional, setRequirementsNumberNotFunctional] =
     useState(0);
 
-    const submitRequirements = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      try {
-        const requestData = {
-          method: editingId ? "PUT" : "POST",
-          body: JSON.stringify(
-            editingId
-              ? { ...newRequirement }
-              : { ...newRequirement, project_id: params.id }
-          ),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-  
-        const response = await fetch(
-          editingId ? requirementtoedit + editingId : requirementstoprojects,
-          requestData
-        );
-  
-        const data = await response.json();
-        if (response.ok) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
-  
-        setEditingId(null);
-        setLoading(false);
-        setNewRequirement(initialState);
-        loadRequirements(params.id);
-        loadQuestionnaire();
-        handleClose();
-      } catch (error) {
-        console.error("Error al agregar los requisitos:", error.message);
-      }
-    };
+  const submitRequirements = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const requestData = {
+        method: editingId ? "PUT" : "POST",
+        body: JSON.stringify(
+          editingId
+            ? { ...newRequirement }
+            : { ...newRequirement, project_id: params.id }
+        ),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
 
-    const submitRequirementsNotFunctionals = async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      try {
-        const requestData = {
-          method: editingIdNotFunctionals ? "PUT" : "POST",
-          body: JSON.stringify(
-            editingIdNotFunctionals
-              ? { ...newRequirementsNotFuntional }
-              : { ...newRequirementsNotFuntional, project_id: params.id }
-          ),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-  
-        const response = await fetch(
-          editingIdNotFunctionals
-            ? requirementtoedit + editingIdNotFunctionals
-            : requirementstoprojects,
-          requestData
-        );
-  
-        const data = await response.json();
-        if (response.ok) {
-          toast.success(data.message);
-        } else {
-          toast.error(data.message);
-        }
-  
-        setEditingIdNotFunctionals(null);
-        setLoading(false);
-        setNewRequirementsNotFuntional(initialState2);
-        loadRequirementsNotFunctionals(params.id);
-        loadQuestionnaire();
-        handleCloseNotFunctionals();
-      } catch (error) {
-        console.error("Error al agregar los requisitos:", error.message);
+      const response = await fetch(
+        editingId ? requirementtoedit + editingId : requirementstoprojects,
+        requestData
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
       }
-    };
+
+      setEditingId(null);
+      setLoading(false);
+      setNewRequirement(initialState);
+      loadRequirements(params.id);
+      loadQuestionnaire();
+      handleClose();
+    } catch (error) {
+      console.error("Error al agregar los requisitos:", error.message);
+    }
+  };
+
+  const submitRequirementsNotFunctionals = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const requestData = {
+        method: editingIdNotFunctionals ? "PUT" : "POST",
+        body: JSON.stringify(
+          editingIdNotFunctionals
+            ? { ...newRequirementsNotFuntional }
+            : { ...newRequirementsNotFuntional, project_id: params.id }
+        ),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch(
+        editingIdNotFunctionals
+          ? requirementtoedit + editingIdNotFunctionals
+          : requirementstoprojects,
+        requestData
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+
+      setEditingIdNotFunctionals(null);
+      setLoading(false);
+      setNewRequirementsNotFuntional(initialState2);
+      loadRequirementsNotFunctionals(params.id);
+      loadQuestionnaire();
+      handleCloseNotFunctionals();
+    } catch (error) {
+      console.error("Error al agregar los requisitos:", error.message);
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -209,7 +211,6 @@ export default function Projects() {
         setErrors(data.message);
         setRequirements([]);
       }
-      
     } catch (error) {
       console.error("Error al cargar los requisitos:", error);
     }
@@ -225,7 +226,6 @@ export default function Projects() {
         setErrorsNotFunctionals(data.message);
         setRequirementsNotFuntional([]);
       }
-      
     } catch (error) {
       console.error("Error al cargar los requisitos:", error);
     }
@@ -373,10 +373,9 @@ export default function Projects() {
     try {
       const response = await fetch(requirementsNumber + params.id);
       const data = await response.json();
-  
+
       setRequirementsNumber(data.numberRequirements);
       setRequirementsNumberNotFunctional(data.numberRequirementsNotFunctional);
-      
     } catch (error) {
       console.error("Error al obtener el número de requisitos:", error);
     }
@@ -390,7 +389,7 @@ export default function Projects() {
       loadQuestionnaire();
       fetchProjectProgress();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const [open, setOpen] = useState(false);
@@ -435,9 +434,17 @@ export default function Projects() {
     <div className="">
       <div className="container mx-auto">
         <div className="mt-2 text-center xl:px-5">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          <div className="text-3xl font-bold text-gray-800 mb-4 flex items-center justify-center">
             Cuestionarios OWASP SAMM
-          </h1>
+            <Tooltip content={"Se muestra la lista de cuestionarios, el botón Iniciar para responder cuestionarios y el de Respuestas para ver la lista de resultados"} position="bottom">
+              <QuestionMarkCircleIcon
+                height={24}
+                width={24}
+                className="text-blue-950 hover:underline cursor-pointer ml-2"
+              />
+            </Tooltip>
+          </div>
+
           <button
             className="text-white font-bold py-2 px-4 rounded"
             onClick={handleOpenQues}
