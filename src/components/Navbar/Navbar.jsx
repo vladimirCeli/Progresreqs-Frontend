@@ -161,6 +161,22 @@ export default function Example() {
                         </Menu.Item>
                         <Menu.Item as="button">
                           {({ active }) => (
+                            <Link
+                              to="/projects/all"
+                              onClick={() => {
+                                Disclosure.close();
+                              }}
+                              className={classNames(
+                                active ? "bg-gray-700" : "",
+                                "block px-4 py-2 text-sm text-gray-50 font-medium w-48"
+                              )}
+                            >
+                              Revisar Proyectos
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item as="button">
+                          {({ active }) => (
                             <button
                               onClick={signOut}
                               className={classNames(

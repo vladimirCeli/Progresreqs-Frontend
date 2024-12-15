@@ -14,6 +14,7 @@ import RegisterMessage from "./components/Register/RegisterMessage";
 import PersistentUser from "./components/PersistentUser";
 import RequireAuth from "./components/RequireAuth";
 import ProjectsList from "./pages/Projects/ProjectsList";
+import ProjectListAllPersons from "./pages/Projects/ProjectsListAllPersons";
 import ProjectForm from "./pages/Projects/Project";
 import Projects from "./pages/ProjectInfo/Projects";
 import Requirements from "./pages/Requirements/Requirements";
@@ -199,6 +200,8 @@ function App() {
             <Route path="/simulation" element={<Spractices />} />
 
             <Route path="/listsprojects" element={<ProjectsList />} />
+
+            <Route path="/projects/all" element={<ProjectListAllPersons />} />
 
             <Route path="/selectreq/:id" element={<SelectReq />} />
 

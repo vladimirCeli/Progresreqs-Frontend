@@ -10,6 +10,8 @@ export const resetpass = `${baseURl}/request-password-reset`;
 
 export const resetpassword = `${baseURl}/reset-password/`;
 
+export const projectsallpersons = `${baseURl}/projects/all`;
+
 export const projectspost = `${baseURl}/projects`;
 
 export const projectsbyid = `${baseURl}/projects/`;
