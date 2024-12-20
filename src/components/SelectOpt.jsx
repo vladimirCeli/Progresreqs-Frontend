@@ -47,7 +47,7 @@ const SelectQuestions = ({ label, endpoint, campo, onChange, values, selectedQue
                     onChange={() => handleQuestionChange(question._id)}
                     className="mr-2"
                   />
-                  <span>{question[campo].toString()}</span>
+                  <span>{question[campo] ? question[campo].toString() : "Campo no disponible"}</span>
                 </label>
               </div>
             )
