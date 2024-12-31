@@ -15,19 +15,19 @@ const RequirementSelection = () => {
   // Cargar datos desde el servidor al cargar el componente
   useEffect(() => {
     // Cargar categorías desde la API (solo para presentación)
-    fetch("http://localhost:4000/categoriesecurity")
+    fetch("https://progresreqsapi.azurewebsites.net/categoriesecurity")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error al cargar categorías:", error));
 
     // Cargar subcategorías desde la API
-    fetch("http://localhost:4000/subcategories")
+    fetch("https://progresreqsapi.azurewebsites.net/subcategories")
       .then((response) => response.json())
       .then((data) => setSubcategoriesData(data))
       .catch((error) => console.error("Error al cargar subcategorías:", error));
 
     // Cargar requisitos de seguridad desde la API
-    fetch("http://localhost:4000/requirementsec")
+    fetch("https://progresreqsapi.azurewebsites.net/requirementsec")
       .then((response) => response.json())
       .then((data) => setSecurityRequirements(data))
       .catch((error) => console.error("Error al cargar requisitos de seguridad:", error));
@@ -161,7 +161,7 @@ const RequirementSelection = () => {
     };
 
     // Enviar la solicitud POST al servidor para guardar las selecciones
-    fetch("http://localhost:4000/intereq", {
+    fetch("https://progresreqsapi.azurewebsites.net/intereq", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
