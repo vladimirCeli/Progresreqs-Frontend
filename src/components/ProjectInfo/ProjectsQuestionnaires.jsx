@@ -22,18 +22,23 @@ const ProjectsQuestionnaires = ({ questionnaires, paramsId, navigate }) => {
     try {
       const response = await fetch(questionnairesAdditional + paramsId);
       const data = await response.json();
-      const questionnairesWithResponses =
-        data.questionnairesWithResponses || [];
-      const questionnairesWithoutResponses =
-        data.questionnairesWithoutResponses || [];
-
-      // Actualizar los estados correspondientes
+  
+      console.log("Respuesta de la API:", data); // Verifica la estructura real de `data`
+  
+      if (!data || typeof data !== "object") {
+        throw new Error("Respuesta inesperada del servidor");
+      }
+  
+      const questionnairesWithResponses = data.questionnairesWithResponses ?? [];
+      const questionnairesWithoutResponses = data.questionnairesWithoutResponses ?? [];
+  
       setQuestionnaire(questionnairesWithResponses);
       setAdditionalQuestionnaires(questionnairesWithoutResponses);
     } catch (error) {
       console.error("Error al cargar cuestionarios adicionales:", error);
     }
   };
+  
 
   useEffect(() => {
     loadAdditionalQuestionnaires();

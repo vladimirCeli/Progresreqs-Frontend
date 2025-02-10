@@ -80,7 +80,12 @@ const Login = () => {
     <section className=" flex items-center justify-center relative overflow-hidden md:p-32">
     <div className="w-96 bg-gray-50 rounded-2xl shadow-lg max-w-md p-8 flex flex-col items-center space-y-6 bg-opacity-75">
         <Link to="/">
-        <Logo width={80} height={60} className="" />
+        <img
+              src="../../../img/unl.png"
+              alt="Logo Universidad Nacional de Loja"
+              className="h-16 w-36 md:h-24 md:w-64"
+              style={{ padding: "15px 0 0 0" }}
+            />
         </Link>
         <h2 className="font-bold text-2xl">Iniciar sesión</h2>
         <p className="text-sm text-center">

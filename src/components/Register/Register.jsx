@@ -99,7 +99,12 @@ const Register = ({ onSuccessRegistration }) => {
     <section className="flex items-center justify-center relative overflow-hidden md:p-20">
       <div className="w-96 bg-gray-50 rounded-2xl shadow-lg max-w-md p-4 flex flex-col items-center space-y-6 bg-opacity-75">
         <Link to="/">
-          <Logo width={80} height={60} className="" />
+        <img
+              src="../../../img/unl.png"
+              alt="Logo Universidad Nacional de Loja"
+              className="h-16 w-36 md:h-24 md:w-64"
+              style={{ padding: "15px 0 0 0" }}
+            />
         </Link>
         <h1 className="text-2xl font-bold mt-4">Registro</h1>
         <form

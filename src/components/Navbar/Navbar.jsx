@@ -46,15 +46,20 @@ export default function Example() {
           <>
             <div className="max-w-7xl mx-auto px-4 sm:px6 lg:px8">
               <div className="flex items-center justify-between">
-                  <div>
-                    <Link to="/" className="h-8 w-auto">
-                      <Logo className="h-8 w-auto" />
-                    </Link>
-                  </div>
-                  
-                    <div className="hidden md:block">
-                      <ul className="flex space-x-2 text-white sm:text-xs font-sans font-bold">
-                      <li>
+                <div>
+                  <Link to="/" className="h-10 w-auto">
+                    <img
+                      src="../../../img/logounlblanco.png"
+                      alt="Logo Universidad Nacional de Loja"
+                      className="h-10 w-auto md:h-10 md:w-auto"
+                      style={{ padding: "15px 0 0 0" }}
+                    />
+                  </Link>
+                </div>
+
+                <div className="hidden md:block">
+                  <ul className="flex space-x-2 text-white sm:text-xs font-sans font-bold">
+                    <li>
                       <Link to="/projects/new" className="px-3 py-2">
                         <a
                           target="_blank"
@@ -64,19 +69,18 @@ export default function Example() {
                           Nuevo proyecto
                         </a>
                       </Link>
-                      </li>
-                      </ul>
-                    </div>
-                  
-                    
-                  <Disclosure.Button className="md:hidden text-white">
-                    {open ? (
-                      <XMarkIcon className="h-6 w-6"/>
-                    ) : (
-                      <Bars3Icon className="h-6 w-6"/>
-                    )}
-                  </Disclosure.Button>
-                
+                    </li>
+                  </ul>
+                </div>
+
+                <Disclosure.Button className="md:hidden text-white">
+                  {open ? (
+                    <XMarkIcon className="h-6 w-6" />
+                  ) : (
+                    <Bars3Icon className="h-6 w-6" />
+                  )}
+                </Disclosure.Button>
+
                 <div>
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
