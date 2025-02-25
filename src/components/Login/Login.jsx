@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -6,8 +6,6 @@ import useInput from "../../hooks/useInput";
 import useToggle from "../../hooks/useToggle";
 import { Eye, EyeOff } from "react-feather";
 import { login } from "../../Services/Fetch";
-import { Logo } from "../Logo";
-
 const Login = () => {
   const { setAuth } = useAuth();
 
@@ -29,16 +27,14 @@ const Login = () => {
   const [check, toggleCheck] = useToggle("persist", false);
 
   useEffect(() => {
-    userRef.current.focus();
+    userRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    setErrors("");
-  }, [values, setErrors]);
+    if (errors) setErrors("");
+  }, [values]);
 
-  const [, setLoginSuccessful] = useState(false);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -51,30 +47,34 @@ const Login = () => {
         credentials: "include",
       });
 
-      const data = await resp.json();
-      if (resp.ok) {
-        const username = values?.username;
-        const accessToken = data?.token;
-        const roles = data?.rol_id;
-
-        setAuth({
-          username,
-          accessToken,
-          roles,
-        });
-        setLoginSuccessful(true);
-        navigate(from, { replace: true });
-        if (roles === 1) navigate("/managequestionnaire");
-        if (roles === 2) navigate("/listsprojects");
-      } else {
+      if (!resp.ok) {
+        const data = await resp.json();
         setLoading(false);
         setErrors(data.message);
+        return;
+      }
+
+      const data = await resp.json();
+      const { username, roles: rol_id, token: accessToken } = {
+        username: values?.username,
+        roles: data?.rol_id,
+        token: data?.token,
+      };
+
+      setAuth({ username, accessToken, roles: rol_id });
+      
+      if (rol_id === 1) {
+        navigate("/managequestionnaire", { replace: true });
+      } else if (rol_id === 2) {
+        navigate("/listsprojects", { replace: true });
+      } else {
+        navigate(from, { replace: true });
       }
     } catch (error) {
       setLoading(false);
       setErrors("Error al procesar la solicitud. Por favor, inténtelo de nuevo.");
     }
-  };
+  }, [values, setAuth, navigate, from]);
 
   return (
     <section className=" flex items-center justify-center relative overflow-hidden md:p-32">
