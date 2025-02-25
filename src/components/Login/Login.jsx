@@ -37,42 +37,61 @@ const Login = () => {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrors("");
+
     try {
+      // Usar AbortController solo para casos excepcionales
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
       const resp = await fetch(login, {
         method: "POST",
         body: JSON.stringify(values),
         headers: {
           "Content-Type": "application/json",
+          'Accept': 'application/json', // Optimización: Especificar tipo de respuesta esperada
+          'Cache-Control': 'no-cache' // Optimización: Evitar cache
         },
         credentials: "include",
+        signal: controller.signal,
+        priority: "high" // Optimización: Alta prioridad para la petición
       });
 
-      if (!resp.ok) {
-        const data = await resp.json();
-        setLoading(false);
-        setErrors(data.message);
-        return;
-      }
+      clearTimeout(timeoutId);
 
       const data = await resp.json();
-      const { username, roles: rol_id, token: accessToken } = {
-        username: values?.username,
-        roles: data?.rol_id,
-        token: data?.token,
-      };
 
-      setAuth({ username, accessToken, roles: rol_id });
-      
-      if (rol_id === 1) {
-        navigate("/managequestionnaire", { replace: true });
-      } else if (rol_id === 2) {
-        navigate("/listsprojects", { replace: true });
-      } else {
-        navigate(from, { replace: true });
+      if (!resp.ok) {
+        throw new Error(data.message || 'Error en la autenticación');
       }
+
+      // Optimización: Destructuring directo de la respuesta
+      const { rol_id, token: accessToken } = data;
+      
+      // Optimización: Actualizar estado y navegar de inmediato
+      setAuth({ 
+        username: values.username, 
+        accessToken, 
+        roles: rol_id 
+      });
+
+      // Navegación inmediata
+      navigate(
+        rol_id === 1 ? "/managequestionnaire" : 
+        rol_id === 2 ? "/listsprojects" : 
+        from, 
+        { replace: true }
+      );
+
     } catch (error) {
+      console.error('Error en login:', error);
+      setErrors(
+        error.name === 'AbortError'
+          ? "Tiempo de espera agotado. Por favor, inténtelo de nuevo."
+          : error.message || "Error al procesar la solicitud."
+      );
+    } finally {
       setLoading(false);
-      setErrors("Error al procesar la solicitud. Por favor, inténtelo de nuevo.");
     }
   }, [values, setAuth, navigate, from]);
 
